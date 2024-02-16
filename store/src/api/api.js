@@ -29,8 +29,7 @@ export const api = createApi({
           Authorization: `Bearer ${token}`,
         },
       }),
-      // Register User "mutation" registers a new user 
-      // ask LUKE about query: (should it be user or userDatat)
+      // Register User "mutation" registers a new user
       register: builder.mutation({
         query: (userData) => ({
           url: "auth/register",
@@ -48,12 +47,12 @@ export const api = createApi({
       }),
 
       // ORDER
-      //Fetch Create new order
+      //Fetch Create new order / add cart
       newOrder: builder.mutation({
-        query: (orderDetails) => ({
+        query: (orderData) => ({
           url: "/api/order",
           method: "POST",
-          body: orderDetails,
+          body: orderData,
         }),
       }),
       // Fetch updateOrder by ID
@@ -64,12 +63,12 @@ export const api = createApi({
           body: newOrderData,
         }),
       }),
-      // Fetch get user by ID
-      getByUserId: builder.query({
-        query: (orderId) => ({
-          url: `/api/order/${orderId}`,
+      // Fetch get orders by user ID
+      getOrderByUserId: builder.query({
+        query: (userId) => ({
+          url: `/api/order/${userId}`,
           method: "GET",
-          body: orderId,
+          body: userId,
         }),
       }),
       // Fetch get order by ID
@@ -98,4 +97,11 @@ export const {
   useRegisterMutation,
   useLoginMutation,
   useNewOrderMutation,
+  useUpdateOrderMutation,
+  useGetOrderByUserIdQuery,
+  useGetOrderByIdQuery,
+  useDeleteOrderMutation
 } = api;
+
+
+export default api; 
