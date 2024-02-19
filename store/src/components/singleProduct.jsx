@@ -1,32 +1,33 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { fetchProductById } from "../app/productSlice";
 
-const SingleProduct = () => {
-  const { productId } = useParams();
-  const dispatch = useDispatch();
-  const product = useSelector((state) =>
-    state.product.find((p) => p.id === productId)
-  );
+// // import { useParams } from "react-router-dom";
+// // import { useGetProductByIdQuery } from "../api/api";
+// // import { Container, Card, Spinner, Alert} from 'react-bootstrap';
 
-  useEffect(() => {
-    if (!product) {
-      dispatch(fetchProductById(productId));
-    }
-  }, [dispatch, productId, product]);
+// // const SingleProduct = () => {
+// //   const { productId } = useParams();
+// //   // Use the RTK Query hook to get product details
+// //   const { data: product, error, isLoading } = useGetProductByIdQuery(productId);
 
-  if (!product) {
-    return <div>Loading product details...</div>;
-  }
+// if (isLoading)
+//     return (
+//       <Spinner animation="border" role="status">
+//         <span className="visually-hidden">Loading...</span>
+//       </Spinner>
+//     );
+//   if (error) return <Alert variant="danger">An error occurred.</Alert>;
+  
+// //   return (
+// //     <Container className="mt-4">
+// //       <Card>
+// //         <Card.Body>
+// //           <Card.Title>{product.productName}</Card.Title>
+// //           <Card.Text>{product.description}</Card.Text>
+// //           <Card.Text>Price: ${product.price}</Card.Text>
+// //           {/* add more details if wanted */}
+// //         </Card.Body>
+// //       </Card>
+// //     </Container>
+// //   );
+// // };
 
-  return (
-    <div>
-      <h2>{product.name}</h2>
-      <p>{product.description}</p>
-      {/* add more details if wanted */}
-    </div>
-  );
-};
-
-export default SingleProduct;
+// // export default SingleProduct;

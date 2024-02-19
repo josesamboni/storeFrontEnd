@@ -1,87 +1,66 @@
-import React, { useEffect, useState } from "react";
-import { link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useLoginMutation } from "../api/api"; // connect with mutation from api
+// import { useState } from "react";
+// import { Link, Navigate } from "react-router-dom";
+// import { useLoginMutation } from "../api/api"; // connect with mutation from api
 
-export default function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [message, setMessage] = useState("");
-  const { token } = useSelector((state) => state.userSlice);
-  const navigate = useNavigate();
-  const [logIn] = useLoginMutation();
-  const formChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-  const login = async (e) => {
-    e.preventDefault();
-    const result = await logIn(form);
-    if (result.error) setMessage(result.error.data.message);
-    else navigate("/account");
-  };
-  
-  useEffect(() => {
-    const logInAcc = () => {
-      navigate("/account");
-    };
-    if (token) logInAcc();
-  }, []);
+// const loginForm = () => {
+//   const navigate = Navigate();
+//   const [form, setForm] = useState({ email: "", password: "" });
+//   const [message, setMessage] = useState("");
+//   const [login, { isLoading, isError }] = useLoginMutation();
 
-  return (
-    <div className="loginPage">
-      <div className="container">
-        <header className="d-flex justify-content-center py-3">
-          <ul className="nav nav-pills">
-            <li className="nav-item">
-              <button className="nav-link" onClick={() => navigate("/")}>
-                Home
-              </button>
-            </li>
-            {!token && (
-              <li className="nav-item">
-                <button
-                  className="nav-link"
-                  onClick={() => navigate("/register")}
-                >
-                  Sign Up
-                </button>
-              </li>
-            )}
-          </ul>
-        </header>
-      </div>
-      {!token && (
-        <form onSubmit={login} className="form">
-          <h1 className="display-3">Login</h1>
-          <div className="form-group mb-3">
-            <input
-              type="email"
-              className="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Email"
-              name="email"
-              onChange={formChange}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <input
-              type="password"
-              className="form-control"
-              id="exampleInputPassword1"
-              placeholder="Password"
-              name="password"
-              onChange={formChange}
-            />
-          </div>
-          <button type="submit" className="btn btn-primary mb-3">
-            Login
-          </button>
-          <p className="text-danger">{message}</p>
-          <p>
-            No account? <link to="/register">Sign Up</link>
-          </p>
-        </form>
-      )}
-    </div>
-  );
-}
+//   const formChange = (e) => {
+//     setForm({ ...form, [e.target.name]: e.target.value });
+//   };
+
+//   const loginForm = async (e) => {
+//     e.preventDefault();
+//     try { 
+//         const result = await login(form);
+//         if (result.error) {
+//             setMessage(result.error.data.message);
+//         } else {
+//             setMessage("");
+//             navigate("/account");
+//         }
+//     } catch (error) { 
+//         console.error('error:', error);
+//     }
+//   }
+
+//   return (
+//     <>
+//       {isLoading && <p>Loading...</p>}
+
+//       <form onSubmit={loginForm} className="form">
+//           <h1 className="display">Log in</h1>
+//           <div className="form-group">
+//             <input
+//               type="email"
+//               placeholder="Email"
+//               name="email"
+//               onChange={formChange}
+//             />
+//           </div>
+//           <div className="form-group">
+//             <input
+//               type="password"
+//               className="form-control"
+//               id="exampleInputPassword1"
+//               placeholder="Password"
+//               name="password"
+//               onChange={formChange}
+//             />
+//           </div>
+//         <button type="submit" className="button">
+//           {isLoading ? 'Logging in...' : 'Login'}
+//         </button>
+//         {isError && <p className="text-danger">{message}</p>}
+//         <p>
+//           No account? <Link to="/register">Sign Up</Link>
+//         </p>
+//       </form>
+//     </>
+//   );
+// };
+
+// export default loginForm;

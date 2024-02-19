@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_URL || "http://localhost:3000",
+    baseUrl: import.meta.env.VITE_URL || "http://localhost:5670",
   }),
 
   // PRODUCTS
@@ -21,14 +21,15 @@ export const api = createApi({
     // USER
     //Fetching User by ID
     getUser: builder.query({
-      query: (token) => ({
-        url: "/auth/me",
+      query: (id) => ({
+        url: `/auth/${id}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${id}`,
         },
       }),
+  
       // Register User "mutation" registers a new user
       register: builder.mutation({
         query: (userData) => ({
@@ -47,15 +48,32 @@ export const api = createApi({
       }),
 
       // ORDER
-      //Fetch Create new order / add cart
-      newOrder: builder.mutation({
-        query: (orderData) => ({
-          url: "/api/order",
+
+      //Fetch View Customer Orders & OrderDetails by ID 
+      getOrdersAdmin: builder.mutation({
+        query: ({ id, token }) => ({
+          url: "/customer",
           method: "POST",
-          body: orderData,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: {id,},
         }),
       }),
-      // Fetch updateOrder by ID
+
+      //Fetch "CREATE" new order / add cart
+      newOrder: builder.mutation({
+        query: ({token, data}) => ({
+          url: "/api/order",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bear ${token}`,}, 
+            body: data,
+      }),
+    }),
+      // Fetch "UPDATE" Order by ID
       updateOrder: builder.mutation({
         query: (id, ...newOrderData) => ({
           url: `/api/order/${id}`,
@@ -63,15 +81,14 @@ export const api = createApi({
           body: newOrderData,
         }),
       }),
-      // Fetch get orders by user ID
+      // Fetch "GET" all orders by user ID
       getOrderByUserId: builder.query({
         query: (userId) => ({
-          url: `/api/order/${userId}`,
+          url: `/api/order/user/${userId}`,
           method: "GET",
-          body: userId,
         }),
       }),
-      // Fetch get order by ID
+      // Fetch "GET" a Single order by ID
       getOrderById: builder.query({
         query: (id) => ({
           url: `/api/order/${id}`,
@@ -79,7 +96,7 @@ export const api = createApi({
           body: id,
         }),
       }),
-      // Fetch delete order by ID
+      // Fetch "DELETE" order by ID
       deleteOrder: builder.mutation({
         query: (id) => ({
           url: `api/order/${id}`,
