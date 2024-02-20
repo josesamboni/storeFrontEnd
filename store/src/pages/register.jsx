@@ -1,113 +1,91 @@
-import { useEffect } from "react";
-import {Link, useNavigate} from "react-router-dom"
-import { useSelector } from "react-redux";
-import { useState } from "react";
-import { useRegisterMutation } from "../api/api";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRegisterMutation } from '../api/api';
+import { Container, Form, Button, Card } from 'react-bootstrap';
 
-export default function Register() {
-    const { token } = useSelector((state) => state.userSlice);
-    const [newPerson] =  useRegisterMutation();
+function Registration() {
     const navigate = useNavigate();
-    const [message, setMessage] = useState("");
-    const [form, setForm] = useState({
-      firstname: "",
-      lastname: "",
-      email: "",
-      password: "",
+    const [register] = useRegisterMutation();
+    const [formData, setFormData] = useState({
+        firstName: '', // Corrected to handle first name
+        lastName: '', // Added for last name
+        email: '',
+        password: ''
     });
 
-    const updateForm = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-      };
-      const newUser = async (e) => {
-        e.preventDefault();
-        const result = await newPerson(form);
-        if (result.error) {
-          setMessage(result.error.data.message);
-          return;
-        }
-        navigate("/account");
-      };
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
 
-      useEffect(() => {
-        const goAccount = () => {
-          navigate("/account");
-        };
-        if (token) goAccount();
-      }, [token, navigate]);
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        await register(formData);
+        navigate('/');
+    };
 
-      return (
-        <div className="loginPage">
-          <div className="container">
-            <header className="d-flex justify-content-center py-3">
-              <ul className="nav nav-pills">
-                <li className="nav-item">
-                  <button className="nav-link" onClick={() => navigate("/")}>
-                    Home
-                  </button>
-                </li>
-    
-                <li className="nav-item">
-                  <button className="nav-link" onClick={() => navigate("/login")}>
-                    Login
-                  </button>
-                </li>
-              </ul>
-            </header>
-          </div>
-          {!token && (
-            <form onSubmit={newUser} className="form">
-              <h1 className="display-3">Sign Up</h1>
-              <div className="form-group mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="First Name"
-                  name="firstname"
-                  onChange={updateForm}
-                />
-              </div>
-              <div className="form-group mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Last Name"
-                  name="lastname"
-                  onChange={updateForm}
-                />
-              </div>
-              <div className="form-group mb-3">
-                <input
-                  type="email"
-                  className="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  placeholder="Email"
-                  name="email"
-                  onChange={updateForm}
-                  required
-                />
-              </div>
-              <div className="form-group mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  id="exampleInputPassword1"
-                  placeholder="Password"
-                  name="password"
-                  onChange={updateForm}
-                  required
-                />
-              </div>
-              <p className="text-danger">{message}</p>
-              <button type="submit" className="btn btn-primary mb-3">
-                Sign Up
-              </button>
-              <p>
-                Have an account? <Link to="/login">Login</Link>
-              </p>
-            </form>
-          )}
-        </div>
-      );
-    }
+    return (
+        <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+            <Card style={{ width: '100%', maxWidth: '500px', padding: '2rem', marginTop: '2rem' }}>
+                <Card.Body>
+                    <h1 className="text-center mb-4">Registration Form</h1>
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Label>First Name</Form.Label>
+                            <Form.Control
+                                type="text" // Corrected type
+                                name="firstName" // Corrected attribute
+                                value={formData.firstName}
+                                onChange={handleChange}
+                                placeholder="First name"
+                                required
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasiclastName">
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control
+                                type="text" // Corrected type
+                                name="lastName" // Corrected attribute
+                                value={formData.lastName}
+                                onChange={handleChange}
+                                placeholder="Last name"
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="Enter email"
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="Password"
+                                required
+                            />
+                        </Form.Group>
+                        <Button variant="primary" type="submit" className="w-100 mb-2">
+                            Register
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </Container>
+    );
+}
+
+export default Registration;

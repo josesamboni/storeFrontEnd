@@ -23,7 +23,8 @@ const authSlice = createSlice({
         (state, { payload }) => {
           state.user = payload.user;
           state.token = payload.token;
-          
+         console.log(state.user)
+          console.log(state.token)
         }
       ),
       builder.addMatcher(

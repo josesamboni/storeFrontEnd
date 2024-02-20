@@ -3,6 +3,7 @@ import Login from "./pages/LoginForm";
 import AllProducts from "./components/allProducts";
 import SingleProduct from "./components/singleProduct";
 import Register from "./pages/register";
+import Account from "./pages/account";
 
 function App() {
   // const [token, setToken] = useState(null)
@@ -18,6 +19,7 @@ function App() {
           <Route path={"/singleProduct/:id"} element={<SingleProduct />} />
           <Route path={"/loginForm"} element={<Login />} />
           <Route path={"/register"} element={<Register />} />
+          <Route path={"/account"} element={<Account />} />
         </Routes>
       </div>
     </div>

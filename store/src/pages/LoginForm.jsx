@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLoginMutation } from "../api/api"; // Adjust the import path as needed
 import { useNavigate } from "react-router-dom"; // For redirection
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Form, Button, Container } from "react-bootstrap";
 
 const Login = () => {
   const [email, setEmail] = useState("");

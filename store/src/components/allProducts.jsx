@@ -1,5 +1,5 @@
 //import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { useGetProductsQuery } from "../api/api";
 import {
   Container,
@@ -21,22 +21,30 @@ const AllProducts = () => {
     navigate(`/singleProduct/${productId}`); // Navigate to the product detail page
   };
 
-  if (isLoading) return (
-    <Spinner animation="border" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </Spinner>
-  );
+  if (isLoading)
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
   if (error) return <Alert variant="danger">An error occurred.</Alert>;
 
   return (
     <Container>
-      <h2>All Products</h2>
+      <h2>J.T.B. Candy Shop</h2>
       {products.length > 0 ? (
         <Row xs={1} md={2} lg={3} className="g-4">
           {products.map((product) => (
             <Col key={product.id}>
-              <Card onClick={() => handleCardClick(product.id)} style={{ cursor: 'pointer' }}>
-                <Card.Img variant="top" src={product.imageUrl} alt={product.productName} />
+              <Card
+                onClick={() => handleCardClick(product.id)}
+                style={{ cursor: "pointer" }}
+              >
+                <Card.Img
+                  variant="top"
+                  src={product.imageUrl}
+                  alt={product.productName}
+                />
                 <Card.Body>
                   <Card.Title>{product.productName}</Card.Title>
                   <Card.Text>{product.description}</Card.Text>
