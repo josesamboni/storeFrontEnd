@@ -1,12 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { api } from "../api/api"; // import API
-//import Slice from "../api/Slice";
+// import orderSlice from "../app/orderSlice"; // import orderslice 
+import productSlice from "../app/productSlice" // import product slice
 
-// TODO: after we create a slice PAGE we need to call it here
+
 const store = configureStore({
   reducer: {
+    product: productSlice,
+    //order: orderSlice,
+    
     [api.reducerPath]: api.reducer,
-    // slice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
