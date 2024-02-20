@@ -1,13 +1,12 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 
-const Navigation = () => {
+const NavBar = () => {
   const location = useLocation();
 
   const paths = [
     { path: "/", label: "Home" },
-    { path: "/login", label: "Login" },
+    { path: "/LoginForm", label: "LoginForm" },
     { path: "/register", label: "Register" },
     { path: "/checkout", label: "Checkout" },
     { path: "/account", label: "Account" },
@@ -30,4 +29,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default NavBar;

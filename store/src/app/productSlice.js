@@ -23,7 +23,7 @@ const productSlice = createSlice({
       }
     );
     builder.addMatcher(
-      api.endpoints.getProduct.matchFulfilled,
+      api.endpoints.getProductById.matchFulfilled,
       (state, { payload }) => {
         // Assuming getProduct fetches a single product detail
         state.selectedProduct = payload;
