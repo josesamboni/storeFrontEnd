@@ -1,4 +1,4 @@
-import { api } from "../api/authApi";
+import api from "../api/api";
 import { createSlice } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({
@@ -21,6 +21,7 @@ const authSlice = createSlice({
       builder.addMatcher(
         api.endpoints.login.matchFulfilled,
         (state, { payload }) => {
+          console.log(payload)
           state.user = payload.user;
           state.token = payload.token;
          console.log(state.user)

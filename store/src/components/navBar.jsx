@@ -8,7 +8,7 @@ const NavBar = () => {
     { path: "/", label: "Home" },
     { path: "/LoginForm", label: "LoginForm" },
     { path: "/register", label: "Register" },
-    { path: "/checkout", label: "Checkout" },
+    { path: "/cart", label: "Cart" },
     { path: "/account", label: "Account" },
   ];
 

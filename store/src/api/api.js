@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_URL || "http://localhost:5670",
+    baseUrl: import.meta.env.VITE_URL || "http://localhost:3000",
   }),
 
   // PRODUCTS
@@ -20,8 +20,8 @@ export const api = createApi({
     // USER
     //Fetching User
     getUser: builder.query({
-      query: (token) => ({
-        url: `/auth/me`,
+      query: ({id, token}) => ({
+        url: "/auth/"+ id,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -32,23 +32,23 @@ export const api = createApi({
 
     // Register User "mutation" registers a new user
     register: builder.mutation({
-      query: (userData) => ({
+      query: (body) => ({
         url: "auth/register",
         method: "POST",
-        body: userData,
+        body: body,
       }),
     }),
     // Log in user
     login: builder.mutation({
-      query: (user) => ({
+      query: (body) => ({
         url: "/auth/login",
         method: "POST",
-        body: user,
+        body: body,
       }),
     }),
     // ORDER
     //Fetch View Customer Orders & OrderDetails by ID
-    getOrderDetails: builder.mutation({
+    getOrderDetail: builder.query({
       query: ({ id, token }) => ({
         url: "/customer",
         method: "POST",
@@ -66,14 +66,14 @@ export const api = createApi({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bear ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: data,
       }),
     }),
     // Fetch "UPDATE" Order by ID
     updateOrder: builder.mutation({
-      query: (id, ...newOrderData) => ({
+      query: ({ id, ...newOrderData }) => ({
         url: `/api/order/${id}`,
         method: "PUT",
         body: newOrderData,
@@ -82,16 +82,19 @@ export const api = createApi({
     // Fetch "GET" all orders by user ID
     getOrderByUserId: builder.query({
       query: (userId) => ({
-        url: `/api/order/user/${userId}`,
+        url: `/api/order/${userId}`,
         method: "GET",
       }),
     }),
     // Fetch "GET" a Single order by ID
-    getOrderById: builder.query({
-      query: (id) => ({
-        url: `/api/order/${id}`,
+    getCartOrder: builder.query({
+      query: ({token}) => ({
+        url: `/api/order/getCartOrder`,
         method: "GET",
-        body: id,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }),
     }),
     // Fetch "DELETE" order by ID
@@ -113,8 +116,9 @@ export const {
   useNewOrderMutation,
   useUpdateOrderMutation,
   useGetOrderByUserIdQuery,
-  useGetOrderByIdQuery,
+  useGetCartOrderQuery,
   useDeleteOrderMutation,
+  useGetOrderDetailQuery,
 } = api;
 
 export default api;
