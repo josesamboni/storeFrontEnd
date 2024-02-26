@@ -8,18 +8,29 @@ const NavBar = () => {
     { path: "/", label: "Home" },
     { path: "/LoginForm", label: "LoginForm" },
     { path: "/register", label: "Register" },
-    { path: "/checkout", label: "Checkout" },
+    { path: "/cart", label: "Cart" },
     { path: "/account", label: "Account" },
   ];
 
   return (
-    <Navbar bg="light" expand="lg">
-      <Navbar.Brand as={Link} to="/">Welcome to Our Store!</Navbar.Brand>
+    <Navbar bg="light" expand="lg" style={{ boxShadow: '0 2px 4px rgba(0,0,0,.1)' }}>
+      <Navbar.Brand as={Link} to="/" style={{ fontWeight: 'bold', color: '#0056b3', fontSize: '24px' }}>Welcome to Our Store!</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
-          {paths.filter(({ condition }) => condition !== false).map(({ path, label }) => (
-            <Nav.Link as={Link} to={path} key={path} className={location.pathname === path ? "active" : ""}>
+          {paths.map(({ path, label }) => (
+            <Nav.Link
+              as={Link}
+              to={path}
+              key={path}
+              className={location.pathname === path ? "active" : ""}
+              style={{
+                color: location.pathname === path ? '#007bff' : '#555',
+                fontWeight: location.pathname === path ? 'bold' : 'normal',
+                fontSize: '18px',
+                marginRight: '20px',
+              }}
+            >
               {label}
             </Nav.Link>
           ))}

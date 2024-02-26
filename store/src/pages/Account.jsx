@@ -1,108 +1,61 @@
-// import  { useState } from "react";
-// import { useSelector } from "react-redux";
-// import { useNavigate } from "react-router-dom";
-// import { useEffect } from "react";
-// import { useDispatch } from "react-redux";
-// import { setToken } from "../app/userSlice";
-// import LogIn from "./logIn";
-// import { useGetOrderByIdQuery } from "../api/api";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-// export default function account() {
-//   const { token, user } = useSelector((state) => state.userSlice);
-//   const navigate = useNavigate();
-//   const { data } = useGetOrderByIdQuery(id);
-//   //console.log(data)
+import { Container, Row, Col, Card } from "react-bootstrap";
+import { useGetUserQuery, useGetOrderByUserIdQuery } from "../api/api";
 
-//   useEffect(() => {
-//     if (!token) {
-//       navigate("/login");
-//     }
-//   }, [token, navigate]);
-//   useGetOrderByIdQuery(token, { refetchOnMountOrArgChange: true });
+function Account() {
+  const { user, token } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
-//   return (
-//     token &&
-//     user && (
-//       <div className="accountPage">
-//         <div className="container">
-//           <header className="d-flex justify-content-center py-3">
-//             <ul className="nav nav-pills">
-//               <li className="nav-item">
-//                 <button className="nav-link" onClick={() => navigate("/")}>
-//                   Home
-//                 </button>
-//               </li>
-//               {!token && (
-//                 <li className="nav-item">
-//                   <button
-//                     className="nav-link"
-//                     onClick={() => navigate("/login")}
-//                   >
-//                     Login
-//                   </button>
-//                 </li>
-//               )}
-//               {token && (
-//                 <li className="nav-item">
-//                   <button
-//                     className="nav-link"
-//                     onClick={() => {
-//                       dispatch(setToken(null));
-//                       navigate("/");
-//                     }}
-//                   >
-//                     Logout
-//                   </button>
-//                 </li>
-//               )}
-//             </ul>
-//           </header>
-//         </div>
-//         <div className="userInfo">
-//           <blockquote className="blockquote text-center">
-//             <p className="mb-2">
-//               Welcome {user.firstname || "User"} {user.lastname || "User"}!
-//             </p>
-//             <footer className="blockquote-footer">
-//               <cite title="Source Title">{user.email}</cite>
-//             </footer>
-//           </blockquote>
-//         </div>
-//         <div className="store">
-//           {!user.books.length && (
-//             <div style={{ display: "grid", justifyItems: "center" }}>
-//               <h1 className="display-3">Empty Cart</h1>
-             
-//             </div>
-//           )}
-//           {user.products.map((product) => {
-//             return (
-//               <div
-//                 key={product.id}
-//                 className="card"
-//                 style={{ width: "18rem", margin: "5px" }}
-//               >
-//                 <img
-//                   src={product.coverimage}
-//                   className="card-img-top"
-//                   alt={product.title}
-//                 />
-//                 <div className="card-body">
-//                   <h5 className="card-title">{product.title}</h5>
-//                   <p className="card-text">{product.author}</p>
-//                 </div>
-//                 <button
-//                   id={product.id}
-//                   className="btn btn-primary"
-//                   onClick={returnProduct}
-//                 >
-//                   Return
-//                 </button>
-//               </div>
-//             );
-//           })}
-//         </div>
-//       </div>
-//     )
-//   );
-// }
+  const userId = user?.id || "";
+
+  const [userData, setUserData] = useState(null);
+  const [orderData, setOrderData] = useState(null);
+
+  const { data: userDetails, isSuccess: userDetailsSuccess } = useGetUserQuery(userId, { skip: !token });
+  const { data: orderDetails, isSuccess: orderDetailsSuccess } = useGetOrderByUserIdQuery(userId, { skip: !token });
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/loginForm");
+    } else {
+      if (userDetailsSuccess) {
+        setUserData(userDetails);
+      }
+      if (orderDetailsSuccess) {
+        setOrderData(orderDetails);
+      }
+    }
+  }, [token, navigate, userDetails, userDetailsSuccess, orderDetails, orderDetailsSuccess]);
+
+  return (
+    <Container style={{ marginTop: '20px' }}>
+      <Row>
+        <Col>
+          {userData && (
+            <Card style={{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', marginBottom: '20px' }}>
+              <Card.Body>
+                <Card.Title style={{ fontSize: '22px', fontWeight: 'bold' }}>Account Details</Card.Title>
+                <Card.Text style={{ fontSize: '16px' }}>
+                  <div>Id: {userData.id}</div>
+                  <div>First Name: {userData.firstname}</div>
+                  <div>Last Name: {userData.lastname}</div>
+                  <div>Email: {userData.email}</div>
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          )}
+          {orderData && (
+            <div style={{ fontSize: '16px' }}>
+              {/* Render your order details here with similar styling */}
+            </div>
+          )}
+        </Col>
+      </Row>
+    </Container>
+  );
+}
+
+export default Account;
